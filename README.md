@@ -8,5 +8,5 @@ MFCC,
 SPECTRAL CENTROID and
 CHROMAGRAM
 
-Hidden state activation functions: RELU
+Hidden state activation functions: RELU,
 Last layer actication function: Softmax
