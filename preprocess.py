@@ -32,7 +32,9 @@ def save_mfcc(dataset_path, json_path, num_mfcc=13, n_fft=2048, hop_length=512, 
 
     samples_per_segment = int(SAMPLES_PER_TRACK / num_segments)
     num_mfcc_vectors_per_segment = math.ceil(samples_per_segment / hop_length)
-
+    #print(samples_per_segment)
+    #print(SAMPLES_PER_TRACK)
+    #print(num_segments)
     # loop through all genre sub-folder
     for i, (dirpath, dirnames, filenames) in enumerate(os.walk(dataset_path)):
 
@@ -62,6 +64,7 @@ def save_mfcc(dataset_path, json_path, num_mfcc=13, n_fft=2048, hop_length=512, 
                     mfcc = librosa.feature.mfcc(y=signal[start:finish], sr=SAMPLE_RATE, n_mfcc=num_mfcc, n_fft=n_fft,
                                                 hop_length=hop_length)
                     mfcc = mfcc.T
+                    #print(mfcc.shape)
 
                     #extract spectral centroid
                     spectral_centroid = librosa.feature.spectral_centroid(y=signal[start:finish], sr=SAMPLE_RATE, n_fft=n_fft,
