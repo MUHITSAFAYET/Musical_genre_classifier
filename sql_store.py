@@ -36,9 +36,23 @@ print(len(genre_name))
 files_list=[]
 for i in range(len(data['mfcc'])):
     with open('parrot'+str(i)+'.pkl', 'wb') as f:
-        pickle.dump(df['mfcc'][i],f)
-    files_list.append('parrot'+str(i)+'.pkl')
+        files_list.append(pickle.dump(df['mfcc'][i],f))
 
 f.close()
 
+engine=sqlalchemy.create_engine('sqlite:///genre.db')
+conn = sqlite3.connect('engine')
+c = conn.cursor()
 
+c.execute("""CREATE TABLE IF NOT EXISTS genres( 
+            labels Integer,
+            genre_name text,
+            mfcc PickleType)
+            """)
+
+
+for i in range(len(df["genre_name"])):
+    c.execute("INSERT INTO genres VALUES(:labels, :genre_name, :mfcc)", {'labels': data['labels'][i], 'genre_name': genre_name[i], 'mfcc':files_list[i]})
+    conn.commit()
+
+conn.close()
