@@ -4,7 +4,7 @@ import math
 import librosa
 
 DATASET_PATH = "/media/mrifat/MRIFAT/MUSICAL_GENRE_CLASSIFIER/genres"
-JSON_PATH = "data_10.json"
+JSON_PATH = "data.json"
 SAMPLE_RATE = 22050
 TRACK_DURATION = 30  # measured in seconds
 SAMPLES_PER_TRACK = SAMPLE_RATE * TRACK_DURATION
@@ -25,9 +25,9 @@ def save_mfcc(dataset_path, json_path, num_mfcc=13, n_fft=2048, hop_length=512, 
     data = {
         "mapping": [],
         "labels": [],
-        "mfcc": [],
-        "spectral_centroid": [],
-        "chromagram": []
+        "mfcc": []
+        #"spectral_centroid": [],
+        #"chromagram": []
     }
 
     samples_per_segment = int(SAMPLES_PER_TRACK / num_segments)
@@ -67,14 +67,14 @@ def save_mfcc(dataset_path, json_path, num_mfcc=13, n_fft=2048, hop_length=512, 
                     #print(mfcc.shape)
 
                     #extract spectral centroid
-                    spectral_centroid = librosa.feature.spectral_centroid(y=signal[start:finish], sr=SAMPLE_RATE, n_fft=n_fft,
-                                                hop_length=hop_length)
-                    spectral_centroid = spectral_centroid.T
+                    #spectral_centroid = librosa.feature.spectral_centroid(y=signal[start:finish], sr=SAMPLE_RATE, n_fft=n_fft,
+                                                #hop_length=hop_length)
+                    #spectral_centroid = spectral_centroid.T
 
                     #extract chroma features
-                    chromagram = librosa.feature.chroma_stft(y=signal[start:finish], sr=SAMPLE_RATE, n_fft=n_fft,
-                                                hop_length=hop_length)
-                    chromagram = chromagram.T
+                    #chromagram = librosa.feature.chroma_stft(y=signal[start:finish], sr=SAMPLE_RATE, n_fft=n_fft,
+                                                #hop_length=hop_length)
+                    #chromagram = chromagram.T
 
                     # store only mfcc feature with expected number of vectors
                     if len(mfcc) == num_mfcc_vectors_per_segment:
@@ -83,9 +83,9 @@ def save_mfcc(dataset_path, json_path, num_mfcc=13, n_fft=2048, hop_length=512, 
                         #print(i)
                         data["mfcc"].append(mfcc.tolist())
                         data["labels"].append(i-1)
-                        data["spectral_centroid"].append(spectral_centroid.tolist())
-                        data["chromagram"].append(chromagram.tolist())
-                        print("{}, segment:{}".format(file_path, d+1))
+                        #data["spectral_centroid"].append(spectral_centroid.tolist())
+                        #data["chromagram"].append(chromagram.tolist())
+                        #print("{}, segment:{}".format(file_path, d+1))
 
     # save MFCCs to json file
     with open(json_path, "w") as fp:
